@@ -190,8 +190,9 @@
             text-align: center;
           }
 
-          .attrib a {
+          #attrib-link {
             text-decoration: none;
+            color: #7952b3;
           }
 
           #editable:empty:not(:focus):before {
@@ -231,8 +232,8 @@
             <div class="save-button">
               <button id="button">Download Image</button>
             </div>
-            <div class="attrib">
-              <a href="http://presidentialmessages.com">presidentialmessages.com</a>
+            <div id="attrib" class="attrib">
+              <a id="attrib-link" href="http://presidentialmessages.com">presidentialmessages.com</a>
             </div>
           </div>
         </div>
@@ -246,9 +247,12 @@
   (function () {
     var button = document.getElementById('button');
     var editable = document.getElementById('editable');
+    var attrib = document.getElementById('attrib');
+
     button.addEventListener('click', function() {
       button.style.display = 'none';
       editable.contentEditable = false;
+      attrib.style.marginTop = "90%";
       [].slice.apply(editable.querySelectorAll('br')).forEach(function(br) {
         br.remove();
       });
@@ -273,6 +277,7 @@
       img.src = 'data:image/svg+xml,' + encodeURIComponent(svg.outerHTML);
       button.style.display = 'block';
       editable.contentEditable = true;
+      attrib.style.marginTop = "45%";
     });
 
     function showTime(){
