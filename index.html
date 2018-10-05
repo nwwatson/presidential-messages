@@ -185,6 +185,14 @@
             opacity: .8;
             padding: 0 1em 1em;
           }
+          .attrib {
+            margin-top: 45%;
+            text-align: center;
+          }
+
+          .attrib a {
+            text-decoration: none;
+          }
         </style>
         <div class="marvel-device iphone-x">
           <div class="notch">
@@ -203,7 +211,7 @@
           </div>
           <div class="inner-shadow"></div>
           <div class="screen">
-            <div class="clock">2:18</div>
+            <div id="clock-div" class="clock"></div>
             <div class="charged">100% Charged</div>
             <div class="notification">
               <header>
@@ -219,6 +227,9 @@
             <div class="save-button">
               <button id="button">Save Your Image</button>
             </div>
+            <div class="attrib">
+              <a href="http://presidentialmessages.com">presidentialmessages.com</a>
+            </div>
           </div>
         </div>
       </div>
@@ -228,36 +239,63 @@
 
 </html>
 <script>
-  var button = document.getElementById('button');
-  var editable = document.getElementById('editable');
-  button.addEventListener('click', function() {
-    button.style.display = 'none';
-    editable.contentEditable = false;
-    [].slice.apply(editable.querySelectorAll('br')).forEach(function(br) {
-      br.remove();
-    });
-    var svg = document.getElementById('svg');
-    var canvas = document.createElement('canvas');
-    canvas.width = 427;
-    canvas.height = 864;
-    var ctx = canvas.getContext('2d');
-    var img = new Image();
-    img.crossOrigin = true;
-    img.onload = function() {
-      ctx.drawImage(img, 0, 0);
-      canvas.toBlob(function(blob) {
-        var anchor = document.createElement('a');
-        anchor.download = 'presidential-message.png';
-        anchor.href = (window.webkitURL || window.URL).createObjectURL(blob);
-        document.body.appendChild(anchor);
-        anchor.click();
-        anchor.remove();
+  (function () {
+    var button = document.getElementById('button');
+    var editable = document.getElementById('editable');
+    button.addEventListener('click', function() {
+      button.style.display = 'none';
+      editable.contentEditable = false;
+      [].slice.apply(editable.querySelectorAll('br')).forEach(function(br) {
+        br.remove();
       });
+      var svg = document.getElementById('svg');
+      var canvas = document.createElement('canvas');
+      canvas.width = 427;
+      canvas.height = 864;
+      var ctx = canvas.getContext('2d');
+      var img = new Image();
+      img.crossOrigin = true;
+      img.onload = function() {
+        ctx.drawImage(img, 0, 0);
+        canvas.toBlob(function(blob) {
+          var anchor = document.createElement('a');
+          anchor.download = 'presidential-message.png';
+          anchor.href = (window.webkitURL || window.URL).createObjectURL(blob);
+          document.body.appendChild(anchor);
+          anchor.click();
+          anchor.remove();
+        });
+      }
+      img.src = 'data:image/svg+xml,' + encodeURIComponent(svg.outerHTML);
+      button.style.display = 'block';
+      editable.contentEditable = true;
+    });
+
+    function showTime(){
+      var date = new Date();
+      var h = date.getHours(); // 0 - 23
+      var m = date.getMinutes(); // 0 - 59
+
+      if(h == 0){
+          h = 12;
+      }
+
+      if(h > 12){
+          h = h - 12;
+      }
+
+      m = (m < 10) ? "0" + m : m;
+
+
+      var time = h + ":" + m;
+      document.getElementById("clock-div").innerText = time;
+      document.getElementById("clock-div").textContent = time;
+
+      setTimeout(showTime, 1000);
+
     }
-    img.src = 'data:image/svg+xml,' + encodeURIComponent(svg.outerHTML);
-    button.style.display = 'block';
-    editable.contentEditable = true;
-  });
+    showTime();
+  })();
 </script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-126974944-1"></script>
