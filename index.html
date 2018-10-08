@@ -314,6 +314,15 @@
     showTime();
   })();
 </script>
+<script>
+  (function () {
+    let urlParams = new URLSearchParams(window.location.search);
+    let message = urlParams.get('message');
+    let download = urlParams.get('download');
+    document.getElementById("editable").innerText = message;
+    if (download == "true") document.getElementById('button').click();
+  })();
+</script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-126974944-1"></script>
 <script>
